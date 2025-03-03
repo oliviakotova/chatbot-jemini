@@ -1,5 +1,5 @@
 # chatbot-jemini
-![Chatbot Google Gemini + React JS + Vite ](assets/chat_bot.png)
+
 
 # AI Chatbot
 
