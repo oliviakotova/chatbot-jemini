@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { IoMdArrowRoundUp } from "react-icons/io";
 const ChatForm = ({ chatHistory, setChatHistory, generateBotResponse }) => {
   const inputRef = useRef();
   const handleFormSubmit = (e) => {
@@ -41,7 +42,7 @@ const ChatForm = ({ chatHistory, setChatHistory, generateBotResponse }) => {
         id="send-message"
         className="material-symbols-rounded"
       >
-        arrow_upward
+        <IoMdArrowRoundUp />
       </button>
     </form>
   );

@@ -1,35 +1,112 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
+import { useEffect, useRef, useState } from "react";
+import ChatbotIcon from "../components/ChatbotIcon";
+import ChatForm from "../components/ChatForm";
+import ChatMessage from "../components/ChatMessage";
+import { companyInfo } from "./companyInfo";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
+import { TbMessageChatbotFilled } from "react-icons/tb";
+const App = () => {
+  const chatBodyRef = useRef();
+  const [showChatbot, setShowChatbot] = useState(false);
+  const [chatHistory, setChatHistory] = useState([
+    {
+      hideInChat: true,
+      role: "model",
+      text: companyInfo,
+    },
+  ]);
+  const generateBotResponse = async (history) => {
+    // Helper function to update chat history
+    const updateHistory = (text, isError = false) => {
+      setChatHistory((prev) => [
+        ...prev.filter((msg) => msg.text != "Thinking..."),
+        { role: "model", text, isError },
+      ]);
+    };
+    // Format chat history for API request
+    history = history.map(({ role, text }) => ({ role, parts: [{ text }] }));
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: history }),
+    };
+    try {
+      // Make the API call to get the bot's response
+      const response = await fetch(
+        import.meta.env.VITE_API_URL,
+        requestOptions
+      );
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data?.error.message || "Something went wrong!");
+      // Clean and update chat history with bot's response
+      const apiResponseText = data.candidates[0].content.parts[0].text
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .trim();
+      updateHistory(apiResponseText);
+    } catch (error) {
+      // Update chat history with the error message
+      updateHistory(error.message, true);
+    }
+  };
+  useEffect(() => {
+    // Auto-scroll whenever chat history updates
+    chatBodyRef.current.scrollTo({
+      top: chatBodyRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [chatHistory]);
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className={`container ${showChatbot ? "show-chatbot" : ""}`}>
+      <button
+        onClick={() => setShowChatbot((prev) => !prev)}
+        id="chatbot-toggler"
+      >
+        <span className="material-symbols-rounded">
+          <TbMessageChatbotFilled />
+        </span>
+        <span className="material-symbols-rounded">
+          <IoClose />
+        </span>
+      </button>
+      <div className="chatbot-popup">
+        {/* Chatbot Header */}
+        <div className="chat-header">
+          <div className="header-info">
+            <ChatbotIcon />
+            <h2 className="logo-text">Chatbot</h2>
+          </div>
+          <button
+            onClick={() => setShowChatbot((prev) => !prev)}
+            className="material-symbols-rounded"
+          >
+            <IoIosArrowDown />
+          </button>
+        </div>
+        {/* Chatbot Body */}
+        <div ref={chatBodyRef} className="chat-body">
+          <div className="message bot-message">
+            <ChatbotIcon />
+            <p className="message-text">
+              Hey there <br /> How can I help you today?
+            </p>
+          </div>
+          {/* Render the chat history dynamically */}
+          {chatHistory.map((chat, index) => (
+            <ChatMessage key={index} chat={chat} />
+          ))}
+        </div>
+        {/* Chatbot Footer */}
+        <div className="chat-footer">
+          <ChatForm
+            chatHistory={chatHistory}
+            setChatHistory={setChatHistory}
+            generateBotResponse={generateBotResponse}
+          />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
+    </div>
+  );
+};
+export default App;

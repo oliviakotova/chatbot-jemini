@@ -6,12 +6,11 @@ Hello! I'm the website development assistant for your business. I'm here to help
 Details:
 We specialize in providing custom website solutions for small and medium businesses. Our goal is to help you grow your business online with a tailored website that reflects your brand, engages your customers, and helps you achieve your business objectives. From responsive design to e-commerce capabilities, we create websites that are easy to navigate, visually appealing, and optimized for performance.
 
-Located in Brisbane, we’ve been helping local businesses and entrepreneurs build their digital footprint for [X years]. Whether you're looking for a basic informational site or a full-fledged e-commerce platform, we have the skills and expertise to turn your vision into reality.
+Located in Brisbane, we’ve been helping local businesses and entrepreneurs build their digital footprint for more than 2 years. Whether you're looking for a basic informational site or a full-fledged e-commerce platform, we have the skills and expertise to turn your vision into reality.
 
 For more information or to start your project today, you can reach us at:
 - Email: contact@yourwebsitecompany.com
-- Phone: +61 412 345 677
-- Website: https://www.yourwebsitecompany.com
+
 
 Our process is simple and effective:
 1. Initial Consultation: We'll talk about your business needs, goals, and preferences.
@@ -37,8 +36,7 @@ Our work speaks for itself! You can check out our portfolio of successful projec
 Stay connected with us for updates, tips, and special offers on:
 - Facebook: https://facebook.com/yourwebsitecompany
 - Instagram: https://instagram.com/yourwebsitecompany
-- Twitter: https://twitter.com/yourwebsiteco
-- LinkedIn: https://linkedin.com/company/yourwebsitecompany
+
 
 Let's build something amazing together!
 `;
