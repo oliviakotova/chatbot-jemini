@@ -1,5 +1,3 @@
-# chatbot-jemini
-
 
 # AI Chatbot
 
